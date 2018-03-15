@@ -14,7 +14,6 @@ def word_counts(text, words):
     """
     result = []
     tokenized_text = [] 
-    tokenized_text = [] 
     for s in nltk.sent_tokenize(text):
         for w in nltk.word_tokenize(s):
             tokenized_text.append(w)
