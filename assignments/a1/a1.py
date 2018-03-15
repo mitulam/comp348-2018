@@ -12,6 +12,18 @@ def word_counts(text, words):
     >>> word_counts(emma, ['the', 'a'])
     [4842, 3001]
     """
+    result = []
+    tokenized_text = [] 
+    tokenized_text = [] 
+    for s in nltk.sent_tokenize(text):
+        for w in nltk.word_tokenize(s):
+            tokenized_text.append(w)
+   
+    freqTokenized_text =nltk.FreqDist( tokenized_text)
+    for word in words:
+        value =  freqTokenized_text [word]
+        result.append(value)
+    
     return []
 
 # Task 2 (1 mark)
@@ -21,6 +33,20 @@ def pos_counts(text, pos_list):
     >>> pos_counts(emma, ['DET', 'NOUN'])
     [14352, 32029]
     """
+    
+    result = []
+    sentTokenized_text = nltk.sent_tokenize(text)
+    tokenized_text = [nltk.word_tokenize(s) for s in sentTokenized_text]
+  
+    token_list = nltk.pos_tag_sents(tokenized_text, tagset = "universal")
+    
+    pos_list_fd = nltk.FreqDist([tag for tags in token_list for (word, tag) in  tags])
+    
+  
+    for word in pos_list:
+        value = pos_list_fd [word]
+        result.append(value)
+      
     return []
 
 # Task 3 (1 mark)
@@ -35,11 +61,26 @@ def compute_fres(text):
     >>> compute_fres(emma) # doctest: +ELLIPSIS
     99.40...
     """
-    return 0.0
+    
+    total_sent = 0
+    total_word = 0
+    total_syl = 0
+    tokenizer = RegexpTokenizer(r'\w+')
+    tokenized_sent = nltk.sent_tokenize(text)
+    
+    total_sent = len(tokenized_sent)
+    
+    for sent in tokenized_sent :
+        words = nltk.word_tokenize(sent)
+        total_word +=len(words)
+        for word in words:
+            total_syl += count_syllables(word)
+        
+    return 206.835 - 1.015 * (total_word/ total_sent) - 84.6 * (total_syl / total_word)
 
 # Task 4 (2 marks)
 import re
-regexp = re.compile('.*(st|nd|rd|th)$')
+regexp =  re.compile('.*([0-9]+st|[0-9]+nd|[0-9]+rd|[0-9]+th|[0-9]+d|teenth|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth|ieth)$')
 def annotateOD(listoftokens):
     """Annotate the ordinal numbers in the list of tokens
     >>> annotateOD("the second tooth".split())
